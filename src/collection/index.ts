@@ -1,3 +1,12 @@
+
+
+export function isCollection<T>(item: any): item is Collection<T> {
+  return typeof item === 'object'
+    && 'path' in item
+    && '__type__' in item
+    && item.__type__ === 'collection';
+}
+
 /**
  * The collection type. It contains the path in Firestore.
  */

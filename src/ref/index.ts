@@ -1,5 +1,14 @@
 import firestore from '../adaptor'
-import { Collection } from '../collection'
+import { Collection, isCollection } from '../collection'
+
+export function isRef<T>(item: any): item is Ref<T> {
+  return typeof item === 'object'
+    && '__type__' in item
+    && 'id' in item
+    && 'collection' in item
+    && isCollection(item.collection)
+    && item.__type__ === 'ref';
+}
 
 /**
  * The document reference type.
