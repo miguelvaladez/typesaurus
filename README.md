@@ -1,3 +1,29 @@
+# 🦕 Typesaurus-RxJS
+
+This is a fork of [kossnocorp/typesaurus](https://github.com/kossnocorp/typesaurus) with RxJs. The work done in the original repository was great and I wanted to adapt a repository pattern in a side-project, while still leveraging the RxJS 'reactive' style:
+
+```ts
+get$(users, '42').pipe(//do stuff)
+```
+and
+
+```ts
+all$(users).pipe(
+  // blah
+)
+```
+
+Each returning an Observable version of it's Promise counterpart.
+
+This is in semi-active development from `develop` or `feature` branches.
+
+TODOS:
+
+- Add a `query$` method
+- Add tests
+- Code Housekeeping
+- Add some helper methods: `isDoc`, `isCollection`, etc.
+
 # 🦕 Typesaurus
 
 TypeScript-first ORM for Firestore.
@@ -15,15 +41,13 @@ TypeScript-first ORM for Firestore.
 ## Installation
 
 The library is available as an [npm package](https://www.npmjs.com/package/typesaurus).
-To install Typesaurus run:
+To install the package run:
 
 ```sh
-npm install typesaurus @google-cloud/firestore firebase firebase-admin --save
+npm install typesaurus --save
 # or with yarn
-yarn add typesaurus @google-cloud/firestore firebase firebase-admin
+yarn add typesaurus
 ```
-
-_Note that Typesaurus requires `firebase` package to work in the web environment and `@google-cloud/firestore` with `firebase-admin` to work in Node.js. These packages are listed in the peer dependencies and won't install automatically along with the Typesaurus package._
 
 ## Get started
 
