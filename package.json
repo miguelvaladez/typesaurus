@@ -1,5 +1,5 @@
 {
-  "name": "typesaurus",
+  "name": "@miguelvaladez/typesaurus-rxjs",
   "version": "1.2.0",
   "description": "Type-safe ORM for Firestore",
   "keywords": [
@@ -14,9 +14,15 @@
     "copy": "cp {package.json,*.md} lib",
     "sync": "rsync --archive --prune-empty-dirs --exclude '*.ts' --relative src/./ lib"
   },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
   "main": "index.js",
-  "repository": "https://github.com/kossnocorp/typesaurus",
+  "repository": "https://github.com/miguelvaladez/typesaurus-rxjs",
   "author": "Sasha Koss <koss@nocorp.me>",
+  "contributors": [
+    "Miguel Valadez <miguelvaladez@principlepms.com.au>"
+  ],
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.4.5",
