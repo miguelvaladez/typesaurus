@@ -11,9 +11,11 @@ export default function all$<Model>(
   return new Observable((observer) => {
     firestore().collection(collection.path)
       .onSnapshot((snapshot: FirebaseFirestore.QuerySnapshot) => {
-        const docs: Doc<Model>[] = snapshot.docs.map(d =>
-          doc(ref(collection, d.id), wrapData(d.data()) as Model)
-        );
+        const docs: Doc<Model>[] = snapshot.docs
+          .map((d: FirebaseFirestore.QueryDocumentSnapshot) =>
+            doc(ref(collection, d.id), wrapData(d.data()) as Model)
+          );
+
         observer.next(docs);
       });
   });
