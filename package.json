@@ -7,6 +7,13 @@
     "Firestore",
     "TypeScript"
   ],
+  "scripts": {
+    "build-lib": "yarn build && yarn prettier && yarn copy && yarn sync",
+    "build": "rm -rf lib && tsc",
+    "prettier": "prettier 'lib/**/*.[jt]s' --write --loglevel silent",
+    "copy": "cp {package.json,*.md} lib",
+    "sync": "rsync --archive --prune-empty-dirs --exclude '*.ts' --relative src/./ lib"
+  },
   "main": "index.js",
   "repository": "https://github.com/kossnocorp/typesaurus",
   "author": "Sasha Koss <koss@nocorp.me>",
