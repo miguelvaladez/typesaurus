@@ -24,3 +24,4 @@ export * from './transaction'
 export { default as update } from './update'
 export * from './value'
 export * from './where'
+export * from './snapshotChanges$';

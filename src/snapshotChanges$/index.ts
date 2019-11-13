@@ -18,6 +18,9 @@ export interface DocChange<Model> {
   changeType: DocumentChangeType
 }
 
+const stringToEnumValue = <ET, T>(enumObj: ET, str: string): T =>
+  (enumObj as any)[Object.keys(enumObj).filter(k => (enumObj as any)[k] === str)[0]];
+
 export function toDocChange<Model>(
   ref: Ref<Model>,
   docChange: FirebaseFirestore.DocumentChange
@@ -25,15 +28,15 @@ export function toDocChange<Model>(
   let document: Doc<Model> = doc(ref, wrapData(docChange.doc.data()) as Model);
   return {
     ...document,
-    changeType: DocumentChangeType[docChange.type as keyof typeof DocumentChangeType]
+    changeType: stringToEnumValue<typeof DocumentChangeType, DocumentChangeType>(DocumentChangeType, docChange.type)
   };
 }
 
-export default function snapshotChanges$<Model>(
+export function snapshotChanges$<Model>(
   collection: Collection<Model>
 ): Observable<DocChange<Model>[]> {
   return new Observable((observer: Subscriber<DocChange<Model>[]>) => {
-    firestore().collection(collection.path)
+    const unsubscribe = firestore().collection(collection.path)
       .onSnapshot((snapshot: FirebaseFirestore.QuerySnapshot) => {
         const docs = snapshot.docChanges()
           .map((docChange: FirebaseFirestore.DocumentChange) => {
@@ -41,6 +44,7 @@ export default function snapshotChanges$<Model>(
           });
 
         observer.next(docs);
-      })
+      });
+    return unsubscribe();
   });
 }
