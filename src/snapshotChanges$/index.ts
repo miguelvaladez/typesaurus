@@ -11,17 +11,14 @@ export enum DocumentChangeType {
   Removed = 'removed'
 };
 
-export interface DocChange<Model> {
-  __type__: 'doc'
-  data: Model
-  ref: Ref<Model>
-  changeType: DocumentChangeType
+export interface DocChange<Model> extends Doc<Model> {
+  changeType: DocumentChangeType;
 }
 
 const stringToEnumValue = <ET, T>(enumObj: ET, str: string): T =>
   (enumObj as any)[Object.keys(enumObj).filter(k => (enumObj as any)[k] === str)[0]];
 
-export function toDocChange<Model>(
+function asDocChange<Model>(
   ref: Ref<Model>,
   docChange: FirebaseFirestore.DocumentChange
 ): DocChange<Model> {
@@ -40,7 +37,7 @@ export function snapshotChanges$<Model>(
       .onSnapshot((snapshot: FirebaseFirestore.QuerySnapshot) => {
         const docs = snapshot.docChanges()
           .map((docChange: FirebaseFirestore.DocumentChange) => {
-            return toDocChange<Model>(ref(collection, docChange.doc.id), docChange);
+            return asDocChange<Model>(ref(collection, docChange.doc.id), docChange);
           });
 
         observer.next(docs);
