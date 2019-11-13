@@ -22,25 +22,28 @@ function asDocChange<Model>(
   ref: Ref<Model>,
   docChange: FirebaseFirestore.DocumentChange
 ): DocChange<Model> {
-  let document: Doc<Model> = doc(ref, wrapData(docChange.doc.data()) as Model);
-  return {
-    ...document,
-    changeType: stringToEnumValue<typeof DocumentChangeType, DocumentChangeType>(DocumentChangeType, docChange.type)
-  };
+  const document: Doc<Model> = doc(ref, wrapData(docChange.doc.data()) as Model);
+  const changeType: DocumentChangeType = stringToEnumValue<typeof DocumentChangeType, DocumentChangeType>(
+    DocumentChangeType,
+    docChange.type
+  );
+
+  return { ...document, changeType };
 }
 
 export function snapshotChanges$<Model>(
   collection: Collection<Model>
 ): Observable<DocChange<Model>[]> {
-  return new Observable((observer: Subscriber<DocChange<Model>[]>) => {
+  return new Observable((subscriber: Subscriber<DocChange<Model>[]>) => {
     const unsubscribe = firestore().collection(collection.path)
       .onSnapshot((snapshot: FirebaseFirestore.QuerySnapshot) => {
-        const docs = snapshot.docChanges()
-          .map((docChange: FirebaseFirestore.DocumentChange) => {
-            return asDocChange<Model>(ref(collection, docChange.doc.id), docChange);
-          });
+        const docs: DocChange<Model>[] = snapshot
+          .docChanges()
+          .map((docChange: FirebaseFirestore.DocumentChange) =>
+            asDocChange<Model>(ref(collection, docChange.doc.id), docChange)
+          );
 
-        observer.next(docs);
+        subscriber.next(docs);
       });
     return unsubscribe();
   });
