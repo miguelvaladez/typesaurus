@@ -25,7 +25,7 @@ export function querySnapshotChanges$<Model>(
 
   return new Observable((subscriber: Subscriber<DocChange<Model>[]>) => {
     const unsubcribe = query.onSnapshot((snapshot: FirebaseFirestore.QuerySnapshot) => {
-      const docs = snapshot
+      const docs: DocChange<Model>[] = snapshot
         .docChanges()
         .map((change: FirebaseFirestore.DocumentChange) =>
           toDocChange(collection, change)

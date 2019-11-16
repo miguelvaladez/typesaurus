@@ -38,7 +38,7 @@ export function getInitialQueryCursors<Model>(
   return {
     firestoreQuery,
     cursors: []
-  } as QueryCursors<Model>;
+  };
 }
 
 export function buildQueryAndCursors<Model>(
@@ -78,7 +78,7 @@ export function buildQueryAndCursors<Model>(
       }
     }
     return acc;
-  }, initialQueryCursors);
+  }, initialQueryCursors as QueryCursors<Model>);
 }
 
 export function groupCursors<Model>(
