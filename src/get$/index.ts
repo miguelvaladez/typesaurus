@@ -3,7 +3,7 @@ import { Collection, isCollection } from '../collection';
 import { Doc, doc } from '../doc';
 import { Ref, ref } from '../ref';
 import { wrapData } from '../data';
-import { Observable } from 'rxjs';
+import { Observable, Subscriber } from 'rxjs';
 
 function get$<Model>(ref: Ref<Model>): Observable<Doc<Model> | undefined>
 
@@ -34,15 +34,18 @@ function get$<Model>(
     .collection(collection.path)
     .doc(id);
 
-  return new Observable((observer) => {
-    firestoreDoc.onSnapshot((snapshot: FirebaseFirestore.DocumentSnapshot) => {
-      const firestoreData = snapshot.data();
-      const data: Model | undefined = firestoreData && (wrapData(firestoreData) as Model);
-      if (!data) {
-        return observer.next(undefined);
-      }
-      return observer.next(doc(ref(collection, id), data));
-    })
+  return new Observable((subscriber: Subscriber<Doc<Model> | undefined>) => {
+    const unsubcribe = firestoreDoc
+      .onSnapshot((snapshot: FirebaseFirestore.DocumentSnapshot) => {
+        const firestoreData = snapshot.data();
+        const data: Model | undefined = firestoreData && (wrapData(firestoreData) as Model);
+        if (!data) {
+          return subscriber.next(undefined);
+        }
+        return subscriber.next(doc(ref(collection, id), data));
+      });
+
+    return unsubcribe();
   });
 }
 

@@ -6,6 +6,7 @@ export { default as clear } from './clear'
 export * from './collection'
 export * from './cursor'
 export * from './doc'
+export * from './docChange';
 export { default as field } from './field'
 export { default as get } from './get'
 export { default as get$ } from './get$'
@@ -25,3 +26,5 @@ export { default as update } from './update'
 export * from './value'
 export * from './where'
 export * from './snapshotChanges$';
+export * from './query$';
+export * from './querySnapshotChanges$';

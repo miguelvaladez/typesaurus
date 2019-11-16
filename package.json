@@ -1,6 +1,6 @@
 {
   "name": "@miguelvaladez/typesaurus-rxjs",
-  "version": "1.2.0",
+  "version": "1.2.2",
   "description": "Type-safe ORM for Firestore",
   "keywords": [
     "Firebase",
@@ -12,7 +12,11 @@
     "build": "rm -rf lib && tsc",
     "prettier": "prettier 'lib/**/*.[jt]s' --write --loglevel silent",
     "copy": "cp {package.json,*.md} lib",
-    "sync": "rsync --archive --prune-empty-dirs --exclude '*.ts' --relative src/./ lib"
+    "sync": "rsync --archive --prune-empty-dirs --exclude '*.ts' --relative src/./ lib",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:browser": "karma start --single-run",
+    "test:browser-watch": "karma start"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
