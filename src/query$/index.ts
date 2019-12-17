@@ -24,14 +24,17 @@ export function query$<Model>(
   const query = getFirestoreQuery(firestoreQuery, cursors);
 
   return new Observable((subscriber: Subscriber<Doc<Model>[]>) => {
-    const unsubcribe = query
+    const unsubscribe = query
       .onSnapshot((snapshot: FirebaseFirestore.QuerySnapshot) => {
         const docs: Doc<Model>[] = snapshot.docs
           .map((d) => toDoc<Model>(collection, d));
 
         return subscriber.next(docs);
       });
-    return unsubcribe();
+
+    return () => {
+      unsubscribe();
+    };
   });
 }
 

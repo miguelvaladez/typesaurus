@@ -18,6 +18,9 @@ export function snapshotChanges$<Model>(
 
         subscriber.next(docs);
       });
-    return unsubscribe();
+
+    return () => {
+      unsubscribe();
+    };
   });
 }

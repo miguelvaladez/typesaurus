@@ -24,7 +24,7 @@ export function querySnapshotChanges$<Model>(
   const query = getFirestoreQuery(firestoreQuery, cursors);
 
   return new Observable((subscriber: Subscriber<DocChange<Model>[]>) => {
-    const unsubcribe = query.onSnapshot((snapshot: FirebaseFirestore.QuerySnapshot) => {
+    const unsubscribe = query.onSnapshot((snapshot: FirebaseFirestore.QuerySnapshot) => {
       const docs: DocChange<Model>[] = snapshot
         .docChanges()
         .map((change: FirebaseFirestore.DocumentChange) =>
@@ -34,6 +34,8 @@ export function querySnapshotChanges$<Model>(
       subscriber.next(docs);
     });
 
-    return unsubcribe();
+    return () => {
+      unsubscribe();
+    };
   });
 }
